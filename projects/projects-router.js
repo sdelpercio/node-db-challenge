@@ -12,6 +12,19 @@ router.get('/', (req, res) => {
 			res.status(500).json({ error: 'Issue finding projects.', err });
 		});
 });
+router.get('/:id', (req, res) => {
+	const { id } = req.params;
+
+	Project.getAProject(id)
+		.then(project => {
+			Project.getProjectTasks(id).then(tasks => {
+				res.status(200).json({ project, tasks: tasks });
+			});
+		})
+		.catch(err => {
+			res.status(500).json({ error: 'Issue finding project.', err });
+		});
+});
 router.post('/', (req, res) => {
 	const newProject = req.body;
 
